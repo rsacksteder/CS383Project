@@ -97,6 +97,17 @@
 				$.ajax({ url: "./out.txt", 
 					success: function(data){
 
+						if(data.sentiment_tool == 'alchemy')
+						{
+							$('.sentiment140').hide();
+							$('.alchemy').show();
+						}
+						else
+						{
+							$('.alchemy').hide();
+							$('.sentiment140').show();
+						}
+
 						if(!isNaN(data.tweet_cap))
 							$('#sublabel').text('latest ' + data.tweet_cap + ' tweets');
 
@@ -199,16 +210,6 @@
 			padding-right: 5px;
 			z-index: -1;
 		}
-		a.alchemy {
-			position: absolute;
-			top: 10px;
-			right: 10px;
-		}
-		div.alchemy {
-			position: absolute;
-			top: 34px;
-			right: 275px;
-		}
 		#daily-stats {
 			position: absolute;
 			top: 15px;
@@ -259,6 +260,24 @@
 			font-size: 22px;
 			text-align: center;
 		}
+		#attribution {
+			position: absolute;
+			width: 400px;
+			left: 50%;
+			margin-left: -200px;
+			top: 690px;
+			padding-bottom: 15px;
+		}
+		#attribution span.sentiment140 {
+			float: left;
+			padding-top: 10px;
+			padding-right: 10px;
+		}
+		#attribution span.alchemy {
+			float: left;
+			padding-top: 22px;
+			padding-right: 10px;
+		}
 	</style>
 
 </head>
@@ -277,13 +296,20 @@
 	<div id='label'>--:--</div>
 	<div id='sublabel'>latest ---- tweets</div>
 
-	<!--<div class='alchemy'>Powered by</div>
-	<a class='alchemy' href='http://www.alchemyapi.com'>
-		<img src='http://www.alchemyapi.com/images/alchemyAPI.jpg' alt='alchemy-logo'/>
-		<!-- http://www.sentiment140.com/images/logo-large-sentiment140.png -->
-	<!--</a>-->
 	<div id='chart-label'>Twitter Supporters Over Time</div>
 	<div id='chart'></div>
+
+	<div id='attribution'>
+		<span style='display: none' class='alchemy'>Powered By </span>
+		<a style='display: none' class='alchemy' href='http://www.alchemyapi.com'>
+			<img src='http://www.alchemyapi.com/images/alchemyAPI.jpg' alt='alchemy-logo'/>
+		</a>
+		<span class='sentiment140'>Powered By </span>
+		<a class='sentiment140' href='http://www.sentiment140.com'>
+			<img style='width: 259px' src='http://www.sentiment140.com/images/logo-large-sentiment140.png' alt='sentiment140-logo'/>
+		</a>
+	</div>
+
 </body>
 
 </html>

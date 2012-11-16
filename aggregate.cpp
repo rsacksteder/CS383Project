@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			printf("{\"gauge\":%.0f, \"liberal\":%.0f, \"conservative\":%.0f, \"tweets\":%d, \"time\":%ld, \"daily_liberal\":\"%.2f\", \"daily_conservative\":\"%.2f\", \"tweet_cap\":%d}\n", 
+			printf("{\"gauge\":%.0f, \"liberal\":%.0f, \"conservative\":%.0f, \"tweets\":%d, \"time\":%ld, \"daily_liberal\":\"%.2f\", \"daily_conservative\":\"%.2f\", \"tweet_cap\":%d, \"sentiment_tool\":\"%s\"}\n", 
 				liberal_gauge,
 				liberal_pos + liberal_neg,
 				conservative_pos + conservative_neg,
@@ -123,7 +123,8 @@ int main(int argc, char **argv)
 				raw_time * 1000, // output page needs this in milliseconds
 				liberal_gauge_average,
 				100 - liberal_gauge_average,
-				TWEET_CAP
+				TWEET_CAP,
+				(USE_SENTIMENT140 ? "sentiment140" : "alchemy")
 			);
 
 			fflush(stdout);
