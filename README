@@ -2,7 +2,6 @@ dependencies:
 
   - CURL (sudo apt-get install libcurl4-gnutls-dev)
   - JSONCPP (sudo apt-get install libjsoncpp-dev)
-  - Google Test (sudo apt-get install libgtest-dev)
 
 release build: 
 	make
