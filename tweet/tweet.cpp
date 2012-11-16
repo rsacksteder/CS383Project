@@ -18,6 +18,7 @@ tweet::tweet(const char *json_data)
 		// is this json straight from twitter? (ie does it have the created_at field?)
 		if(root.get("created_at", "").asString().length() > 0)
 		{
+			m_lang = root["user"].get("lang", "").asString();
 			m_followers = root["user"].get("followers_count", 0).asInt();
 			m_retweets = root.get("retweet_count", 0).asInt();
 			m_is_retweet = !root["retweeted_status"].empty();
@@ -32,6 +33,7 @@ tweet::tweet(const char *json_data)
 		}
 		else // internal json
 		{
+			m_lang = root.get("language", "").asString();
 			m_followers = root.get("followers", 0).asInt();
 			m_retweets = root.get("retweets", 0).asInt();
 			m_weight = root.get("weight", 0).asInt();
@@ -52,6 +54,7 @@ string tweet::filter(string text)
 		text[i] = tolower(text[i]);
 		if(text[i] == '\n') text[i] = ' ';
 		if(text[i] == '"') text[i] = '\'';
+		if(text[i] == '\\') text[i] = '/';
 	}
 
 	return text;
@@ -80,6 +83,8 @@ void tweet::print(unsigned int fields)
 		cout << ",\"is_retweet\":" << m_is_retweet;
 	if(fields & ORIGINAL_ID)
 		cout << ",\"original_id\":" << m_original_id;
+	if(fields & LANGUAGE)
+		cout << ",\"language\":\"" << m_lang << "\"";
 
 	cout << "}\n" << flush;
 }

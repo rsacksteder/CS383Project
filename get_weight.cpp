@@ -31,6 +31,14 @@ int main(int argc, char **argv)
 	while(getline(cin, line))
 	{
 		tweet t = tweet(line.c_str());
+
+		// filtering: is this tweet in english?
+		if(t.m_lang != "en")
+		{
+			INFO_LOG << "unrecognized language: " << t.m_lang << ": filtered out\n";
+			DEBUG_LOG << "unrecognized language: " << t.m_lang << ": filtered out\n";
+			continue;
+		}
 		
 		// filtering: have we seen this tweet already?
 		if(filter::in_deque(t.m_id, tweet_ids))

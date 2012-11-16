@@ -27,7 +27,8 @@ public:
 		FOLLOWERS 		= (1u << 5),
 		RETWEETS 		= (1u << 6),
 		IS_RETWEET 		= (1u << 7),
-		ORIGINAL_ID 	= (1u << 8)
+		ORIGINAL_ID 	= (1u << 8),
+		LANGUAGE		= (1u << 9)
 	};
 
 	string m_text;
@@ -39,6 +40,7 @@ public:
 	int m_followers;
 	int m_retweets;
 	bool m_is_retweet;
+	string m_lang;
 
 	tweet(const char *json_data);
 	void print(unsigned int fields);

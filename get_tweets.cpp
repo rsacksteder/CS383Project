@@ -21,7 +21,7 @@ using namespace std;
 
 void callback(tweet t)
 {
-	t.print(tweet::ID | tweet::ORIGINAL_ID | tweet::TEXT | tweet::FOLLOWERS | tweet::RETWEETS | tweet::IS_RETWEET);
+	t.print(tweet::ID | tweet::ORIGINAL_ID | tweet::TEXT | tweet::FOLLOWERS | tweet::RETWEETS | tweet::IS_RETWEET | tweet::LANGUAGE);
 }
 
 int main(int argc, char **argv)
