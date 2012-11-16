@@ -68,6 +68,6 @@ inline void WEB_LOG(std::string title, std::string text, std::string type)
 // do you want csv output
 #define CSV_OUTPUT (true)
 
-#define UPDATE_AVG_INTERVAL (10)
+#define UPDATE_AVG_INTERVAL (20)
 
 #endif

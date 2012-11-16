@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	string line = "";
 	double liberal_pos, conservative_pos, liberal_neg, conservative_neg, liberal_gauge, conservative_gauge;
 	double liberal_gauge_average = -1;
-	int tweet_count = 0;
+	int tweet_count = 0, recovered_tweet_count = 0;
 	int avg_update_count = 0;
 
 	time_t raw_time, last_time = 0;
@@ -39,7 +39,35 @@ int main(int argc, char **argv)
 	char ascii_date_csv_name[19]; // of the form "csv/mm-dd-yyyy.csv\0"
 	char ascii_daily_stat_txt_name[27]; // of the form "daily_stats/mm-dd-yyyy.txt\0"
 
-	FILE *csv_out, *csv_check, *avg_save_file;
+	FILE *csv_out, *csv_check, *avg_save_file, *avg_save_file_check;
+
+
+	// recovery
+	time(&raw_time);
+	strftime(ascii_daily_stat_txt_name, 27, "daily_stats/%m-%d-%Y.txt\0", gmtime(&raw_time));
+
+	avg_save_file_check = fopen(ascii_daily_stat_txt_name, "r");
+
+	if(avg_save_file_check != NULL)
+	{
+		INFO_LOG << "recovering from previous run today\n";
+
+		if(!fscanf(avg_save_file_check, "%lf", &liberal_gauge_average))
+			ERROR_LOG << "could not read saved liberal gauge average\n";
+		if(!fscanf(avg_save_file_check, "%d", &avg_update_count))
+			ERROR_LOG << "could not read saved average save count\n";
+		if(!fscanf(avg_save_file_check, "%d", &tweet_count))
+			ERROR_LOG << "could not read saved tweet count\n";
+
+		recovered_tweet_count = tweet_count;
+
+		fclose(avg_save_file_check);
+	}
+	else
+	{
+		INFO_LOG << "this is the first time that we have run today\n";
+	}
+
 
 	while(getline(cin, line))
 	{
@@ -87,21 +115,22 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			printf("{\"gauge\":%.0f, \"liberal\":%.0f, \"conservative\":%.0f, \"tweets\":%d, \"time\":%ld, \"daily_liberal\":\"%.2f\", \"daily_conservative\":\"%.2f\"}\n", 
+			printf("{\"gauge\":%.0f, \"liberal\":%.0f, \"conservative\":%.0f, \"tweets\":%d, \"time\":%ld, \"daily_liberal\":\"%.2f\", \"daily_conservative\":\"%.2f\", \"tweet_cap\":%d}\n", 
 				liberal_gauge,
 				liberal_pos + liberal_neg,
 				conservative_pos + conservative_neg,
 				tweet_count,
 				raw_time * 1000, // output page needs this in milliseconds
 				liberal_gauge_average,
-				100 - liberal_gauge_average
+				100 - liberal_gauge_average,
+				TWEET_CAP
 			);
 
 			fflush(stdout);
 		}
 
 		// only every UPDATE_AVG_INTERVAL seconds, and we've reached the TWEET_CAP
-		if(raw_time >= last_time + UPDATE_AVG_INTERVAL && tweet_count >= TWEET_CAP)
+		if(raw_time >= last_time + UPDATE_AVG_INTERVAL && tweet_count - recovered_tweet_count >= TWEET_CAP)
 		{
 			last_time = raw_time;
 
@@ -162,29 +191,11 @@ int main(int argc, char **argv)
 
 			strftime(ascii_daily_stat_txt_name, 27, "daily_stats/%m-%d-%Y.txt\0", gmtime(&raw_time));
 
-			FILE *avg_save_file_check = fopen(ascii_daily_stat_txt_name, "r");
+			avg_save_file_check = fopen(ascii_daily_stat_txt_name, "r");
 
 			if(avg_save_file_check != NULL)
 			{
-				int saved_avg_count, saved_tweet_count;
-
-				if(!fscanf(avg_save_file_check, "%f", (float*)&liberal_gauge_average))
-					ERROR_LOG << "could not read saved liberal gauge average\n";
-				if(!fscanf(avg_save_file_check, "%d", &saved_avg_count))
-					ERROR_LOG << "could not read saved average save count\n";
-
-				DEBUG_LOG << liberal_gauge_average << "\n\n";
-
-				// we are recovering
-				if(saved_avg_count != avg_update_count - 1)
-				{
-					INFO_LOG << "recovering daily average and count\n";
-					DEBUG_LOG << "recovering daily average and count\n";
-					avg_update_count = saved_avg_count;
-					if(!fscanf(avg_save_file_check, "%d", &saved_tweet_count))
-						ERROR_LOG << "could not read saved tweet count\n";
-					tweet_count += saved_tweet_count;
-				}
+				INFO_LOG << "writing to the daily_stats file again\n";
 
 				fclose(avg_save_file_check);
 
@@ -192,9 +203,8 @@ int main(int argc, char **argv)
 			}
 			else
 			{
+				INFO_LOG << "we are about to write to the daily_stats file for the first time\n";
 				liberal_gauge_average = liberal_gauge;
-				avg_update_count = 1;
-				tweet_count = 1;
 			}
 
 			avg_save_file = fopen(ascii_daily_stat_txt_name, "w");
@@ -206,7 +216,7 @@ int main(int argc, char **argv)
 			else
 			{
 				INFO_LOG << "writing to daily average file\n";
-				fprintf(avg_save_file, "%f\n%d\n%d\n", liberal_gauge_average, avg_update_count, tweet_count);
+				fprintf(avg_save_file, "%lf\n%d\n%d\n", liberal_gauge_average, avg_update_count, tweet_count);
 				fclose(avg_save_file);
 			}
 

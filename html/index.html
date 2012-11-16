@@ -46,7 +46,7 @@
 					'#4572A7', 
 					'#AA4643'
 				],
-				title: { text: null },
+				title: { text: ' ' },
 				plotOptions: {
 					line: { 
 						marker: { enabled: true }
@@ -97,15 +97,20 @@
 				$.ajax({ url: "./out.txt", 
 					success: function(data){
 
-						console.log(data);
+						if(!isNaN(data.tweet_cap))
+							$('#sublabel').text('latest ' + data.tweet_cap + ' tweets');
+
 						if(!isNaN(data.gauge))
 						{
 							gauge.refresh(data.gauge)
-							$('#label').text(data.gauge+":"+(100-data.gauge));
-							$('#tweet-count').text(data.tweets);
+							$('#label').text(data.gauge+':'+(100-data.gauge));
+							$('#tweet-count .val').text(data.tweets);
 
 							if(!isNaN(data.daily_liberal) && data.daily_liberal != -1)
-								$('#daily-average').text(data.daily_liberal + ":" + data.daily_conservative);
+							{
+								$('#daily-liberal .val').text(data.daily_liberal + '%');
+								$('#daily-conservative .val').text(data.daily_conservative + '%');
+							}
 						}
 
 						if(data.time > graph_time + (1*1000)) // add # of seconds between each update
@@ -161,47 +166,38 @@
 		}
 		#gauge {
 			width: 500px;
-			height: 310px;
-			margin-bottom: -10px;
+			height: 340px;
+			margin-bottom: -60px;
 			margin-left: auto;
 			margin-right: auto;
 		}
 		#label {
+			color: #1F1F1F;
 			width: 150px;
 			position: absolute;
 			left: 50%;
-			top: 202px;
+			top: 220px;
 			margin-left: -75px;
 			font-size: 42px;
 			text-align: center;
 			font-weight: bold;
 		}
-		#daily-average {
-			width: 200px;
-			position: absolute;
-			left: 50%;
-			top: 253px;
-			margin-left: -100px;
-			font-size: 28px;
-			text-align: center;
-			font-weight: bold;
+		#sublabel {
 			color: gray;
-		}
-		#tweet-count {
-			width: 200px;
 			position: absolute;
-			left: 50%;
-			top: 283px;
-			margin-left: -100px;
-			font-size: 16px;
-			text-align: center;
+			top: 265px;
+			width: 200px;
+			font-size: 15px;
 			font-weight: bold;
-			color: gray;
+			left: 50%;
+			text-align: center;
+			margin-left: -100px;
 		}
 		#chart {
-			height: 360px;
+			height: 380px;
 			padding-left: 5px;
 			padding-right: 5px;
+			z-index: -1;
 		}
 		a.alchemy {
 			position: absolute;
@@ -213,23 +209,81 @@
 			top: 34px;
 			right: 275px;
 		}
+		#daily-stats {
+			position: absolute;
+			top: 15px;
+			right: 10px;
+			font-size: 14px;
+			text-align: left;
+			color: gray;
+			padding-right: 20px;
+		}
+		#tweet-count {
+			margin-top: 10px;
+		}
+		#daily-heading {
+			color: #1F1F1F;
+			font-weight: bold;
+			font-size: 18px;
+			padding-bottom: 5px;
+		}
+		#daily-liberal {
+			color: #4572A7;
+		}
+		#daily-conservative {
+			color: #AA4643;
+		}
+		.val {
+			float: right;
+		}
+		.substat {
+			padding-left: 10px;
+		}
+		#chart-label {
+			color: gray;
+			position: absolute;
+			left: 26px;
+			top: 298px;
+			font-size: 15px;
+			font-weight: bold;
+			z-index: 1;
+		}
+		#title {
+			position: absolute;
+			width: 300px;
+			top: 20px;
+			left: 50%;
+			margin-left: -150px;
+			color: #1F1F1F;
+			font-weight: bold;
+			font-size: 22px;
+			text-align: center;
+		}
 	</style>
 
 </head>
 
 <body>
+	<div id='title'>Twitter Political Mood Gauge</div>
+
+	<div id='daily-stats'>
+		<div id='daily-heading'>Today's Gauge Averages</div>
+		<div class='substat' id='daily-liberal'>Liberal: <span class='val'>--.--%</span></div>
+		<div class='substat' id='daily-conservative'>Conservative: <span class='val'>--.--%</span></div>
+		<div class='substat' id='tweet-count'>Tweets Today: <span class='val'>0</span></div>
+	</div>
+
 	<div id='gauge'></div>
 	<div id='label'>--:--</div>
-	<div id='daily-average'>--:--</div>
-	<div id='tweet-count'>0</div>
+	<div id='sublabel'>latest ---- tweets</div>
 
-	<div class='alchemy'>Powered by</div>
+	<!--<div class='alchemy'>Powered by</div>
 	<a class='alchemy' href='http://www.alchemyapi.com'>
 		<img src='http://www.alchemyapi.com/images/alchemyAPI.jpg' alt='alchemy-logo'/>
 		<!-- http://www.sentiment140.com/images/logo-large-sentiment140.png -->
-	</a>
-
-	<div id="chart"></div>
+	<!--</a>-->
+	<div id='chart-label'>Twitter Supporters Over Time</div>
+	<div id='chart'></div>
 </body>
 
 </html>
