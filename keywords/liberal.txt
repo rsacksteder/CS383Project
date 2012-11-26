@@ -13,8 +13,3 @@ bailout
 bailouts
 clinton
 biden
-facebook
-twitter
-retweet
-lebron
-king james

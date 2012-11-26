@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "config/config.h"
+#include "config/logger.h"
 
 using namespace std;
 

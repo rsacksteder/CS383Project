@@ -17,7 +17,3 @@ traditionalist
 traditionalists
 libertarian
 libertarians
-murder
-google
-microsoft
-apple

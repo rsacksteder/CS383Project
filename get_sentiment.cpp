@@ -17,6 +17,7 @@
 #include "tweet/tweet.h"
 #include "keywords/keywords.h"
 #include "config/config.h"
+#include "config/logger.h"
 
 using namespace std;
 
