@@ -20,47 +20,82 @@
 
 using namespace std;
 
+void print_tweet(tweet t)
+{
+	static vector<string> l_keywords;
+	if(l_keywords.size() == 0)
+	{
+		keywords::load_liberal(l_keywords);
+	}
+
+	bool has_liberal_keyword = false;
+
+	for (int i = 0; i < l_keywords.size(); i++)
+	{
+		if (string::npos != t.m_text.find(l_keywords[i]))
+		{
+			t.m_liberal = t.m_sentiment * t.m_weight;
+			has_liberal_keyword = true;
+			break;
+		}
+	}
+	
+	if(!has_liberal_keyword)
+	{
+		t.m_conservative = t.m_sentiment * t.m_weight;
+	}
+
+	t.print(tweet::LIBERAL | tweet::CONSERVATIVE);
+}
+
 int main(int argc, char **argv)
 {
 	INFO_LOG << "starting get_sentiment process\n";
 
-	vector<string> c_keywords, l_keywords;
+	vector<string> all_keywords;
 
-	keywords::load_conservative(c_keywords);
-	keywords::load_liberal(l_keywords);
+	keywords::load_conservative(all_keywords);
+	keywords::load_liberal(all_keywords);
 
 	string line = "";
 	sentiment s = sentiment();
 
+	tweet t_done;
+
 	while(getline(cin, line))
 	{
-		tweet t = tweet(line.c_str());
+		tweet t_in = tweet(line.c_str());
 
-		//l_keywords is the vector for liberal
-		for (int i = 0; i < l_keywords.size(); i++)
+		for(int i = 0; i < all_keywords.size(); i++)
 		{
-			if (string::npos != t.m_text.find(l_keywords[i]))
+			if(string::npos != t_in.m_text.find(all_keywords[i]))
 			{
-				t.m_liberal = s.get(t.m_text, l_keywords[i]) * t.m_weight;
-			}
-		}
-		//c_keywords is the vector for conservative
-		for (int i = 0; i < c_keywords.size(); i++)
-		{	
-			if (string::npos != t.m_text.find(c_keywords[i]))
-			{
-				t.m_conservative = s.get(t.m_text, c_keywords[i]) * t.m_weight;
+				s.send_request(t_in, all_keywords[i]);
 			}
 		}
 
-		if(t.m_liberal >= POPULAR_LIMIT || t.m_liberal <= -POPULAR_LIMIT || t.m_conservative >= POPULAR_LIMIT || t.m_conservative <= -POPULAR_LIMIT) 
-		{
-			INFO_LOG << "big tweet\n";
-			WEB_LOG("Popular Tweet", t.m_text, "info");
-		}
+		s.remaining_requests();
 
-		t.print(tweet::LIBERAL | tweet::CONSERVATIVE);
+		while(s.pop_tweet(t_done))
+		{
+			print_tweet(t_done);
+		}
 	}
+
+	while(s.remaining_requests() > 0)
+	{
+		while(s.pop_tweet(t_done))
+		{
+			print_tweet(t_done);
+		}
+	}
+
+	while(s.pop_tweet(t_done))
+	{
+		print_tweet(t_done);
+	}
+
+	s.cleanup_requests();
 
 	return 0;
 }

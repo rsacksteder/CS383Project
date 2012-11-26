@@ -36,7 +36,6 @@ int main(int argc, char **argv)
 		if(t.m_lang != "en")
 		{
 			INFO_LOG << "unrecognized language: " << t.m_lang << ": filtered out\n";
-			DEBUG_LOG << "unrecognized language: " << t.m_lang << ": filtered out\n";
 			continue;
 		}
 		
@@ -46,6 +45,7 @@ int main(int argc, char **argv)
 			INFO_LOG << "repeated tweet: filtered out\n";
 			continue;
 		}
+		
 		// filtering: does it have exactly one keyword?
 		if(!filter::has_one_keyword(t.m_text))
 		{
@@ -79,6 +79,12 @@ int main(int argc, char **argv)
 		}
 
 		t.m_weight = t.m_followers + (AVG_FOLLOWERS * t.m_retweets);
+
+		if(t.m_weight >= POPULAR_LIMIT) 
+		{
+			INFO_LOG << "big tweet\n";
+			WEB_LOG("Popular Tweet", t.m_text, "info");
+		}
 
 		t.print(tweet::TEXT | tweet::WEIGHT);
 	}

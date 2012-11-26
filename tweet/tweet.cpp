@@ -1,10 +1,28 @@
 #include "tweet.h"
 
+tweet::tweet() {}
+
+tweet::tweet(const tweet &t)
+{
+	m_text = t.m_text;
+	m_liberal = t.m_liberal;
+	m_conservative = t.m_conservative;
+	m_sentiment = t.m_sentiment;
+	m_weight = t.m_weight;
+	m_id = t.m_id;
+	m_original_id = t.m_original_id;
+	m_followers = t.m_followers;
+	m_retweets = t.m_retweets;
+	m_is_retweet = t.m_is_retweet;
+	m_lang = t.m_lang;
+}
+
 // constructor (takes json data)
 tweet::tweet(const char *json_data)
 {
 	Json::Value root;
 	Json::Reader reader;
+
 	if(json_data == NULL || !reader.parse(json_data, root))
 	{
 		ERROR_LOG << "failed to decode tweet JSON!\n" << reader.getFormattedErrorMessages() << json_data << "\n\n";
@@ -12,35 +30,46 @@ tweet::tweet(const char *json_data)
 	}
 	else
 	{
-		m_id = root.get("id", 0).asInt64();
-		m_text = filter(root.get("text", "").asString());
-
-		// is this json straight from twitter? (ie does it have the created_at field?)
-		if(root.get("created_at", "").asString().length() > 0)
+		if(root["warning"].get("code", "").asString() == "FALLING_BEHIND")
 		{
-			m_lang = root["user"].get("lang", "").asString();
-			m_followers = root["user"].get("followers_count", 0).asInt();
-			m_retweets = root.get("retweet_count", 0).asInt();
-			m_is_retweet = !root["retweeted_status"].empty();
-			if(m_is_retweet)
-			{
-				m_original_id = root["retweeted_status"].get("id", 0).asInt64();
-			}
-			else
-			{
-				m_original_id = 0;
-			}
+			ERROR_LOG << "lagging behind twitter (" << root["warning"].get("percent_full", 0).asInt() << ")\n";
+			WEB_LOG("Uh-oh", "Looks like the application is having a hard time keeping up with all the tweets.", "warning");
+			m_id = -1;
 		}
-		else // internal json
+		else
 		{
-			m_lang = root.get("language", "").asString();
-			m_followers = root.get("followers", 0).asInt();
-			m_retweets = root.get("retweets", 0).asInt();
-			m_weight = root.get("weight", 0).asInt();
-			m_conservative = root.get("conservative", 0).asDouble();
-			m_liberal = root.get("liberal", 0).asDouble();
-			m_is_retweet = root.get("is_retweet", false).asBool();
-			m_original_id = root.get("original_id", 0).asInt64();
+			m_id = root.get("id", 0).asInt64();
+			m_text = filter(root.get("text", "").asString());
+			m_sentiment = 0;
+
+			// is this json straight from twitter? (ie does it have the created_at field?)
+			if(root.get("created_at", "").asString().length() > 0)
+			{
+				m_lang = root["user"].get("lang", "").asString();
+				m_followers = root["user"].get("followers_count", 0).asInt();
+				m_retweets = root.get("retweet_count", 0).asInt();
+				m_is_retweet = !root["retweeted_status"].empty();
+				if(m_is_retweet)
+				{
+					m_original_id = root["retweeted_status"].get("id", 0).asInt64();
+				}
+				else
+				{
+					m_original_id = 0;
+				}
+			}
+			else // internal json
+			{
+				m_lang = root.get("language", "").asString();
+				m_followers = root.get("followers", 0).asInt();
+				m_retweets = root.get("retweets", 0).asInt();
+				m_weight = root.get("weight", 0).asInt();
+				m_conservative = root.get("conservative", 0).asDouble();
+				m_liberal = root.get("liberal", 0).asDouble();
+				m_is_retweet = root.get("is_retweet", false).asBool();
+				m_original_id = root.get("original_id", 0).asInt64();
+			}
+
 		}
 	}
 }

@@ -1,0 +1,4 @@
+{"id":13, "text":"republican", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"tr"}
+{"id":11, "text":"republican", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"es"}
+{"id":12, "text":"republican", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":""}
+{"id":10, "text":"republican", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"en"}

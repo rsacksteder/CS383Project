@@ -58,9 +58,9 @@ inline void WEB_LOG(std::string title, std::string text, std::string type)
 
 #define TWITTER_ACCOUNT "vikings383:383vikings"
 
-#define TWEET_CAP (100)
+#define TWEET_CAP (250)
 #define AVG_FOLLOWERS (208)
-#define POPULAR_LIMIT (50000)
+#define POPULAR_LIMIT (250000)
 
 // offset from GMT; -8 for Pacific Time
 #define TIME_ZONE_OFFSET (-8)
@@ -68,6 +68,10 @@ inline void WEB_LOG(std::string title, std::string text, std::string type)
 // do you want csv output
 #define CSV_OUTPUT (true)
 
-#define UPDATE_AVG_INTERVAL (20)
+// seconds between recalculating daily average, and saving current gauge value to csv
+#define UPDATE_AVG_INTERVAL (30)
+
+// seconds between webpage graph updates
+#define GRAPH_UPDATE_INTERVAL (18)
 
 #endif

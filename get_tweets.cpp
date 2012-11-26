@@ -21,7 +21,11 @@ using namespace std;
 
 void callback(tweet t)
 {
-	t.print(tweet::ID | tweet::ORIGINAL_ID | tweet::TEXT | tweet::FOLLOWERS | tweet::RETWEETS | tweet::IS_RETWEET | tweet::LANGUAGE);
+	// check to make sure it wasn't a rate limit message
+	if(t.m_id != -1)
+	{
+		t.print(tweet::ID | tweet::ORIGINAL_ID | tweet::TEXT | tweet::FOLLOWERS | tweet::RETWEETS | tweet::IS_RETWEET | tweet::LANGUAGE);
+	}
 }
 
 int main(int argc, char **argv)

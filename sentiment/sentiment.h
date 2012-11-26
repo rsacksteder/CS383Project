@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h> // for atof
+#include <queue>
 #include <curl/curl.h>
 #include <jsoncpp/json/json.h>
 
@@ -32,15 +33,21 @@ private:
 	static size_t alchemy_write_function(char *data, size_t size, size_t nmemb, void *usrdata);
 	static size_t sentiment140_write_function(char *data, size_t size, size_t nmemb, void *usrdata);
 
-	void send_request(double &sentiment, string text, string subject);
+	static void push_tweet(tweet *t, double sentiment);
 
 	CURLM *m_curl;
 	int m_requests;
-	static bool m_alchemy_available;
+	
+	static bool m_use_alchemy;
+	static queue<tweet> m_processed_tweets;
+	static vector<tweet*> m_tweet_vector;
 
 public:
 
-	double get(string text, string subject);
+	void send_request(tweet t, string subject);
+	bool pop_tweet(tweet &t);
+	int remaining_requests();
+	void cleanup_requests();
 
 	sentiment();
 	~sentiment();

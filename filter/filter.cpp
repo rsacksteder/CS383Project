@@ -7,8 +7,8 @@ namespace filter {
 		static vector<string> keywords;
 		if(keywords.size() == 0)
 		{
-		    keywords::load_liberal(keywords);
-		    keywords::load_conservative(keywords);
+			keywords::load_liberal(keywords);
+			keywords::load_conservative(keywords);
 		}
 
 		int keyword_count = 0;

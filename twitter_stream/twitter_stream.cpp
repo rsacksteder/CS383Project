@@ -32,7 +32,7 @@ bool twitter_stream::start()
 
 	if(m_curl)
 	{
-		string fields;
+		string fields = "stall_warnings=true&";
 		
 		string keywords = "track=" + m_keywords[0];
 		for(int i = 1; i < m_keywords.size(); i++)

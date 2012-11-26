@@ -124,7 +124,7 @@
 							}
 						}
 
-						if(data.time > graph_time + (1*1000)) // add # of seconds between each update
+						if(data.time > graph_time + (data.graph_interval*1000))
 						{
 							graph_time = data.time;
 

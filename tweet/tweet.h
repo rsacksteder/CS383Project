@@ -34,6 +34,7 @@ public:
 	string m_text;
 	double m_liberal;
 	double m_conservative;
+	double m_sentiment; // only used within the sentiment module, doesn't need to passed around
 	int m_weight;
 	int64_t m_id;
 	int64_t m_original_id;
@@ -43,6 +44,8 @@ public:
 	string m_lang;
 
 	tweet(const char *json_data);
+	tweet(const tweet &t);
+	tweet();
 	void print(unsigned int fields);
 };
 
