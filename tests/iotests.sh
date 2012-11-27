@@ -13,9 +13,9 @@ NUM_FAILED=0
 
 # get_tweets test
 echo "get_tweets: get_tweets"
-x=`( ./get_tweets > tmpout.txt ) & sleep 5; kill $!`
+x=`( ./get_tweets > tests/tmpout.txt ) & sleep 5; kill $!`
 
-if [ -s tmpout.txt ]; then
+if [ -s tests/tmpout.txt ]; then
 	NUM_PASSED=`expr $NUM_PASSED + 1`
 	echo "............................................PASSED"
 else
