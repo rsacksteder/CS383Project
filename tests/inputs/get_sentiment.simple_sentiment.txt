@@ -1,0 +1,6 @@
+{"id":10,"text":"obama is terrible","weight":1}
+{"id":11,"text":"obama is awesome","weight":1}
+{"id":12,"text":"obama is eating a potato","weight":1}
+{"id":13,"text":"conservatives are terrible","weight":1}
+{"id":14,"text":"conservatives are awesome","weight":1}
+{"id":15,"text":"conservatives are eating potatoes","weight":1}

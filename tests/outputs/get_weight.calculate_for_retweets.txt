@@ -1,0 +1,3 @@
+{"id":10,"text":"republican","weight":52250}
+{"id":11,"text":"republican","weight":209}
+{"id":12,"text":"republican","weight":3080000}

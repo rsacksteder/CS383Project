@@ -116,6 +116,18 @@ int main(int argc, char **argv)
 		}
 		else
 		{
+			// if we are testing, leave out the time (never constant) and other constants
+			#if TESTING
+
+			printf("{\"gauge\":%.0f, \"liberal\":%.0f, \"conservative\":%.0f, \"tweets\":%d}\n", 
+				liberal_gauge,
+				liberal_pos + liberal_neg,
+				conservative_pos + conservative_neg,
+				tweet_count
+			);
+
+			#else
+
 			printf("{\"gauge\":%.0f, \"liberal\":%.0f, \"conservative\":%.0f, \"tweets\":%d, \"time\":%ld, \"daily_liberal\":\"%.2f\", \"daily_conservative\":\"%.2f\", \"tweet_cap\":%d, \"sentiment_tool\":\"%s\", \"graph_interval\":%d}\n", 
 				liberal_gauge,
 				liberal_pos + liberal_neg,
@@ -128,6 +140,8 @@ int main(int argc, char **argv)
 				(USE_SENTIMENT140 ? "sentiment140" : "alchemy"),
 				GRAPH_UPDATE_INTERVAL
 			);
+
+			#endif
 
 			fflush(stdout);
 		}

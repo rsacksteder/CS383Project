@@ -1,0 +1,6 @@
+{"id":10,"liberal":-1,"conservative":0}
+{"id":11,"liberal":1,"conservative":0}
+{"id":12,"liberal":0,"conservative":0}
+{"id":13,"liberal":0,"conservative":-1}
+{"id":14,"liberal":0,"conservative":1}
+{"id":15,"liberal":0,"conservative":0}

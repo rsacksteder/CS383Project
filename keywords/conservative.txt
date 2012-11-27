@@ -1,9 +1,9 @@
 romney
-conservative
 conservatives
-republican
-republican party
+conservative
 republicans
+republican party
+republican
 right wing
 right-wing
 rightwing
@@ -13,7 +13,7 @@ tax cuts
 tax cut
 bush
 conservativism
-traditionalist
 traditionalists
-libertarian
+traditionalist
 libertarians
+libertarian

@@ -30,6 +30,13 @@ info: executables
 release: CFLAGS += -O2
 release: executables
 
+test: CFLAGS += -DTESTING=true
+test: executables
+	@echo ""
+	@tests/iotests.sh
+	@rm -f *.o html/out.txt html/log.txt
+	@rm -f get_sentiment get_weight get_tweets aggregate
+
 executables: get_tweets get_weight get_sentiment aggregate clean
 
 
@@ -82,6 +89,4 @@ clean:
 
 cleanall: clean
 	rm -f get_sentiment get_weight get_tweets aggregate
-
-test:
-	@tests/iotests.sh
+	

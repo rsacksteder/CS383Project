@@ -14,7 +14,11 @@
 	#define INFO (false)
 #endif
 
-#define ERROR_LOG std::cerr << "ERROR " << __FILE__ << ":" << __LINE__ << ": "
+#ifndef TESTING
+	#define TESTING (false)
+#endif
+
+#define ERROR_LOG if(!TESTING) std::cerr << "ERROR " << __FILE__ << ":" << __LINE__ << ": "
 #define INFO_LOG if(INFO) std::cerr << "INFO " << __FILE__ << ":" << __LINE__ << ": "
 #define DEBUG_LOG if(DEBUG) std::cerr << "DEBUG " << __FILE__ << ":" << __LINE__ << ": "
 

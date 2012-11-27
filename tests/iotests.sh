@@ -11,6 +11,18 @@ DIFF=''
 NUM_PASSED=0
 NUM_FAILED=0
 
+# get_tweets test
+echo "get_tweets: get_tweets"
+x=`( ./get_tweets > tmpout.txt ) & sleep 5; kill $!`
+
+if [ -s tmpout.txt ]; then
+	NUM_PASSED=`expr $NUM_PASSED + 1`
+	echo "............................................PASSED"
+else
+	NUM_FAILED=`expr $NUM_FAILED + 1`
+	echo "............................................FAILED"
+fi
+
 for FILE in $INPUTS
 do
 	EXECUTABLE=`echo $FILE | cut -f1 -d.`
@@ -20,7 +32,7 @@ do
 
 	cat tests/inputs/$FILE | ./$EXECUTABLE > tests/tmpout.txt
 
-	DIFF=`diff tests/tmpout.txt tests/outputs/$FILE 2> /dev/null`
+	DIFF=`diff <(sort tests/tmpout.txt) <(sort tests/outputs/$FILE) 2> /dev/null`
 
 	cat tests/outputs/$FILE > /dev/null 2> /dev/null
 
@@ -30,14 +42,16 @@ do
 			echo "............................................PASSED"
 		else
 			NUM_FAILED=`expr $NUM_FAILED + 1`
-			#echo $DIFF
 			echo "............................................FAILED"
+			echo "expected:"
+			cat <(sort tests/outputs/$FILE)
+			echo "actual:"
+			cat <(sort tests/tmpout.txt)
 		fi
 	else
 		NUM_FAILED=`expr $NUM_FAILED + 1`
 		echo ".............................................ERROR"
 	fi
-
 
 done
 

@@ -72,6 +72,7 @@ int main(int argc, char **argv)
 			if(string::npos != t_in.m_text.find(all_keywords[i]))
 			{
 				s.send_request(t_in, all_keywords[i]);
+				break;
 			}
 		}
 

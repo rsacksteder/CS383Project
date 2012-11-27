@@ -11,14 +11,42 @@ namespace filter {
 			keywords::load_conservative(keywords);
 		}
 
-		int keyword_count = 0;
+		vector<string> found_keywords;
 
 		for(int i = 0; i < keywords.size(); i++)
 		{
-			if(string::npos != text.find(keywords[i])) keyword_count++;
+			if(string::npos != text.find(keywords[i])) found_keywords.push_back(keywords[i]);
 		}
 
-		return (keyword_count == 1);
+		if(found_keywords.size() == 0)
+		{
+			return false;
+		}
+		else if(found_keywords.size() == 1)
+		{
+			return true;
+		}
+		else
+		{
+			string longest_keyword = found_keywords[0];
+			for(int i = 1; i < found_keywords.size(); i++)
+			{
+				if(found_keywords[i].length() > longest_keyword.length())
+				{
+					longest_keyword = found_keywords[i];
+				}
+			}
+
+			for(int i = 0; i < found_keywords.size(); i++)
+			{
+				if(string::npos == longest_keyword.find(found_keywords[i]))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
 	}
 
 	bool in_deque(int64_t id, deque<int64_t> &ids)

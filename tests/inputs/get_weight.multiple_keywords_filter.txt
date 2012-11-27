@@ -1,0 +1,4 @@
+{"id":11, "text":"obama AND romney!?!?", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"en"}
+{"id":12, "text":"republicans hate liberals", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"en"}
+{"id":13, "text":"clinton is not obama", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"en"}
+{"id":10, "text":"conservatives", "followers":0, "retweets":0, "is_retweet":0, "original_id":0, "language":"en"}
