@@ -6,21 +6,26 @@ Before building, you'll need these packages (for debian linux)
 
 * download the appropriate debian file for your architecture from: http://packages.debian.org/sid/libcurl4-gnutls-dev
 * then install with this command:
-```sudo dpkg -i [deb filename]```
+```sudo dpkg -i [deb filename]
+```
 
 ###libjsoncpp
 
 * download the appropriate debian file for your architecture from: http://packages.debian.org/sid/libjsoncpp-dev
 * then install with this command:
-```sudo dpkg -i [deb filename]```
+```sudo dpkg -i [deb filename]
+```
 
 Then to make sure everything is right, just run this command in the root of the download:
-```make test```
+```make test
+```
 
-You should get a 100% pass rate. If not, make sure you are connected to the internet and that the packages above installed correctly. If all is well, you can then run this command to rebuild:
-```make```
+You should get a 100% pass rate. If not, make sure you are connected to the internet and that the packages above installed correctly. If all is well, you can then run make to rebuild:
+```make
+```
 
-And then you are ready to go! Run the command below to start:
-```./run.sh```
+And then you are ready to go! Run this script to start:
+```./run.sh
+```
 
 And open html/index.html in firefox to see the output!
