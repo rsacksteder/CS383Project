@@ -2,24 +2,18 @@
 
 Before building, you'll need these packages (for debian linux)
 
-libcurl: 
+##libcurl
 
-download the appropriate debian file for your architecture from:
-
-	http://packages.debian.org/sid/libcurl4-gnutls-dev
-
-then install with this command:
+  * download the appropriate debian file for your architecture from: http://packages.debian.org/sid/libcurl4-gnutls-dev
+  * then install with this command:
 
 	sudo dpkg -i [deb filename]
 
 
-libjsoncpp:
+##libjsoncpp
 
-download the appropriate debian file for your architecture from:
-
-	http://packages.debian.org/sid/libjsoncpp-dev
-
-then install with this command:
+  * download the appropriate debian file for your architecture from: http://packages.debian.org/sid/libjsoncpp-dev
+  * then install with this command:
 
 	sudo dpkg -i [deb filename]
 
