@@ -13,7 +13,7 @@
 #define TWITTER_ACCOUNT "vikings383:383vikings"
 
 #define TWEET_CAP (250)
-#define AVG_FOLLOWERS (208)
+#define AVG_FOLLOWERS (208) // source: http://www.beevolve.com/twitter-statistics/
 #define POPULAR_LIMIT (250000)
 
 // offset from GMT; -8 for Pacific Time

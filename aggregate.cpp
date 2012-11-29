@@ -106,11 +106,21 @@ int main(int argc, char **argv)
 		// add (or subtract) offset
 		raw_time += 3600 * TIME_ZONE_OFFSET;
 
+		bool have_data = true;
+		
 		// calculate gauge values
-		liberal_gauge = (liberal_pos - conservative_neg) * 100 / (liberal_pos + conservative_pos - liberal_neg - conservative_neg);
-		conservative_gauge = 100.0 - liberal_gauge;
+		if(liberal_pos + conservative_pos - liberal_neg - conservative_neg == 0)
+		{
+			INFO_LOG << "no data yet...";
+			have_data = false;
+		}
+		else
+		{
+			liberal_gauge = (liberal_pos - conservative_neg) * 100 / (liberal_pos + conservative_pos - liberal_neg - conservative_neg);
+			conservative_gauge = 100.0 - liberal_gauge;
+		}
 
-		if(liberal_gauge > 100 || liberal_gauge < 0 || liberal_gauge + conservative_gauge != 100)
+		if(have_data && liberal_gauge > 100 || liberal_gauge < 0)
 		{
 			ERROR_LOG << "bad gauge calculation: (liberal gauge value = " << liberal_gauge << ")\n";
 		}
