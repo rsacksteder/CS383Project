@@ -1,3 +1,4 @@
+{"gauge":0, "liberal":0, "conservative":0, "tweets":1}
 {"gauge":0, "liberal":-100, "conservative":0, "tweets":2}
 {"gauge":0, "liberal":-100, "conservative":0, "tweets":3}
 {"gauge":50, "liberal":-100, "conservative":-100, "tweets":4}
