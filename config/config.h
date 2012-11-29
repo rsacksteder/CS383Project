@@ -9,11 +9,14 @@
 // randomly generated sentement
 #define FAKE_SENTIMENT (false)
 
-
+// user provided twitter username and password
 #define TWITTER_ACCOUNT "vikings383:383vikings"
 
+// number of tweets to be aggregated for the simple mood gauge
 #define TWEET_CAP (250)
+// average number of followers per twitter user; statistical used value for weighting
 #define AVG_FOLLOWERS (208) // source: http://www.beevolve.com/twitter-statistics/
+// defines the minimum weight required for a "popular tweet" output notification
 #define POPULAR_LIMIT (250000)
 
 // offset from GMT; -8 for Pacific Time
