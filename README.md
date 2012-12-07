@@ -24,3 +24,7 @@ And then you are ready to go! Run this script to start:
 <code>./run.sh</code>
 
 And open html/index.html in firefox to see the output!
+
+
+
+Built by the Vikings: Gresham, Ryan, and Serendel
